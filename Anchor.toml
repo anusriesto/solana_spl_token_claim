@@ -14,20 +14,18 @@ members = [
 ]
 
 [provider]
-cluster = "testnet"
-wallet = "payxNNNpXxeZMuqCPoiDxCvPRKamjq3mzdiTxHZxUhq.json"
+cluster = "devnet"
+wallet = "/home/anusriesto/.config/solana/id.json"
 
-[programs.mainnet]
-merkle_distributor = "m1uqAm3yAagng3uqphvQ4rRAkRy17F4JX87pFemLBKv"
 
 [programs.devnet]
-merkle_distributor = "m1uqAm3yAagng3uqphvQ4rRAkRy17F4JX87pFemLBKv"
-
-[programs.testnet]
-merkle_distributor = "m1uqAm3yAagng3uqphvQ4rRAkRy17F4JX87pFemLBKv"
+merkle_distributor = "EesKdFLwf2QgP1CbHsxUT7UwSiPUbTEjNyLgsaa6xKnD"
 
 [programs.localnet]
-merkle_distributor = "m1uqAm3yAagng3uqphvQ4rRAkRy17F4JX87pFemLBKv"
+merkle_distributor = "EesKdFLwf2QgP1CbHsxUT7UwSiPUbTEjNyLgsaa6xKnD"
+
+[programs.mainnet]
+merkle_distributor = "EesKdFLwf2QgP1CbHsxUT7UwSiPUbTEjNyLgsaa6xKnD"
 
 [scripts]
 test = "yarn mocha"

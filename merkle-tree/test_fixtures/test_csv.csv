@@ -1,4 +1,4 @@
 pubkey,amount_unlocked,amount_locked,category
-4SX6nqv5VRLMoNfYM5phvHgcBNcBEwUEES4qPPjf1EqS,1000,500,Staker
-8G9xE8awr9vA2PZWFTJSHNhS16KLnXYdV6XEaJP1a2Yx,2000,1000,Validator
-A4mDtfFCkdt9CqGzEkfiSHhJD8d3bUMasVzwajudGtb2,1500,750,Searcher
+64dUEDtQzb99XcQ8G2Urw2mqCKTTiFvPGvmyTT3KMEL1,20,0,Staker
+HoAb7s7jt9qvD4JhdxZpPpEL9pZjh5Gc9nM4H6beQNQq,20,0,Validator
+8o3nrRZUwUnzzxRR5LueGcxmTGwApR75G3r3VcwJuHJm,10,0,Searcher

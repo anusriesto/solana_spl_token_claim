@@ -19,18 +19,9 @@ pub mod error;
 pub mod instructions;
 pub mod state;
 
-security_txt! {
-    // Required fields
-    name: "Merkle Distributor",
-    project_url: "https://jito.network/",
-    contacts: "email:support@jito.network",
-    policy: "https://github.com/jito-foundation/distributor",
-    // Optional Fields
-    preferred_languages: "en",
-    source_code: "https://github.com/jito-foundation/distributor"
-}
 
-declare_id!("mERKcfxMC5SqJn4Ld4BUris3WKZZ1ojjWJ3A3J5CKxv");
+
+declare_id!("EesKdFLwf2QgP1CbHsxUT7UwSiPUbTEjNyLgsaa6xKnD");
 
 #[program]
 pub mod merkle_distributor {

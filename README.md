@@ -7,9 +7,19 @@
 ```bash
 cargo b -r
 
+2. Create the merkle root from the csv data (Change the values according to requirements)
 ```bash
-./target/release/cli --rpc-url https://api.mainnet-beta.solana.com --keypair-path <YOUR KEYPAIR> --airdrop-version 0 --mint jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL --program-id mERKcfxMC5SqJn4Ld4BUris3WKZZ1ojjWJ3A3J5CKxv claim --merkle-tree-path merkle_tree.json
+./target/release/cli --mint Vvv1D7jxRb1RSuRrQJCUUkgtJ5tAkus4qpzpzY7wphA --rpc-url https://api.devnet.solana.com --keypair-path /home/anusriesto/.config/solana/id.json  create-merkle-tree --csv-path merkle-tree/test_fixtures/test_csv.csv --merkle-tree-path mer
+kle_tree.json
 ```
+3. Create the distributor 
+- convert the time to unix time stamp using this link "https://www.unixtimestamp.com/"
+```bash
+./target/release/cli --mint Vvv1D7jxRb1RSuRrQJCUUkgtJ5tAkus4qpzpzY7wphA --rpc-url https://api.devnet.solana.com --keypair-path /home/anusriesto/.config/solana/id.json --program-id m1uqAm3yAagng3uqphvQ4rRAkRy17F4JX87pFemLBKv new-distributor --clawback-receiver
+-token-account CtFnTySC3JaWTiM8EYz8uQAtqbgYWUxy9z96r93Grf3T --start-vesting-ts 1719376312 --end-vesting-ts 1719379912 --merkle-tree-path merkle_tree.json 
+--clawback-start-ts 1719725512
+```
+
 
 ###Requirements
 
