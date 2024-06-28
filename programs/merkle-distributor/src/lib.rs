@@ -21,7 +21,7 @@ pub mod state;
 
 
 
-declare_id!("EesKdFLwf2QgP1CbHsxUT7UwSiPUbTEjNyLgsaa6xKnD");
+declare_id!("G15pAFExGrHqAeSLRPPrXzCXFqJpajhSaTic7pWzJEU7");
 
 #[program]
 pub mod merkle_distributor {

@@ -6,7 +6,7 @@ solana_version = "1.16.9" # Solana version to use
 seeds = true
 
 [registry]
-url = "https://api.apr.dev"
+url = "https://anchor.projectserum.com"
 
 [workspace]
 members = [
@@ -19,13 +19,13 @@ wallet = "/home/anusriesto/.config/solana/id.json"
 
 
 [programs.devnet]
-merkle_distributor = "EesKdFLwf2QgP1CbHsxUT7UwSiPUbTEjNyLgsaa6xKnD"
+merkle_distributor = "G15pAFExGrHqAeSLRPPrXzCXFqJpajhSaTic7pWzJEU7"
 
 [programs.localnet]
-merkle_distributor = "EesKdFLwf2QgP1CbHsxUT7UwSiPUbTEjNyLgsaa6xKnD"
+merkle_distributor = "G15pAFExGrHqAeSLRPPrXzCXFqJpajhSaTic7pWzJEU7"
 
 [programs.mainnet]
-merkle_distributor = "EesKdFLwf2QgP1CbHsxUT7UwSiPUbTEjNyLgsaa6xKnD"
+merkle_distributor = "G15pAFExGrHqAeSLRPPrXzCXFqJpajhSaTic7pWzJEU7"
 
 [scripts]
 test = "yarn mocha"
