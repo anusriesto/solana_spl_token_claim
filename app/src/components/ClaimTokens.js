@@ -10,7 +10,7 @@ const ClaimTokens = () => {
   const [claimAmount, setClaimAmount] = useState(0);
   const [userAddress, setUserAddress] = useState(null);
   const dist=new PublicKey('CtFnTySC3JaWTiM8EYz8uQAtqbgYWUxy9z96r93Grf3T');
-  const wallet = useWallet();
+  
 
   useEffect(() => {
     const checkWalletConnection = async () => {
@@ -83,14 +83,14 @@ const ClaimTokens = () => {
   };
   
 
-  if (!wallet.connected) {
-    /* If the user's wallet is not connected, display connect wallet button. */
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
-        <WalletMultiButton />
-      </div>
-    )
-  } else{
+  // if (!wallet.connected) {
+  //   /* If the user's wallet is not connected, display connect wallet button. */
+  //   return (
+  //     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
+  //       <WalletMultiButton />
+  //     </div>
+  //   )
+  // } else{
   return (
     <div>
       <h2>Claim Tokens</h2>
@@ -105,7 +105,6 @@ const ClaimTokens = () => {
       )}
     </div>
   );
-}
 };
 
 export default ClaimTokens;
