@@ -9,6 +9,7 @@ use router::RouterState;
 use solana_program::pubkey::Pubkey;
 use solana_rpc_client::nonblocking::rpc_client::RpcClient;
 use tracing::{info, instrument};
+use tower_http::cors::{Any,CorsLayer};
 
 use crate::{error::ApiError, router::read_distributor};
 
@@ -73,8 +74,8 @@ async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         distributor_pubkey: merkle_distributor,
         rpc_client,
     });
-
-    let app = router::get_routes(state, args.enable_proof_endpoint);
+    let cors = CorsLayer::new().allow_origin(Any);
+    let app = router::get_routes(state, args.enable_proof_endpoint).layer(cors);
 
     axum::Server::bind(&args.bind_addr)
         .serve(app.into_make_service_with_connect_info::<SocketAddr>())
