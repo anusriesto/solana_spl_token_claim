@@ -121,30 +121,41 @@ function App() {
         token,
         wal
       );
-      //const tx = new Transaction();
-      // const preInstruction=await createSendSolanaSPLTokensInstruction(
-      //   connection,
-      //   provider.wallet.publicKey,
-      //   provider.wallet.publicKey
+      const tx = new Transaction();
+      const preInstruction=await createSendSolanaSPLTokensInstruction(
+        connection,
+        provider.wallet.publicKey,
+        provider.wallet.publicKey
 
-      // )
+      )
         
 
-    // const accounts = {
-    //   distributor: dist,
-    //   claimStatus:claim_statusPda,
-    //   from: from_ata,
-    //   to: associatedTokenTo,
-    //   claimant:provider.wallet.publicKey,
-    //   systemProgram: SystemProgram.programId,
-    //   tokenProgram: TOKEN_PROGRAM_ID,
-    // };
-    // const tx=new Transaction(await program.methods.newClaim(amnt_unlocked,amnt_locked,proof)
-    //   .accounts(accounts)
-    //   .preInstructions(preInstruction)
-    //   .instruction());
+    const accounts = {
+      distributor: dist,
+      claimStatus:claim_statusPda,
+      from: from_ata,
+      to: associatedTokenTo,
+      claimant:provider.wallet.publicKey,
+      systemProgram: SystemProgram.programId,
+      tokenProgram: TOKEN_PROGRAM_ID,
+    };
+    await program.methods.newClaim(value_lock,value_unlock,{
+        "name": "proof",
+        "type": {
+          "vec": {
+            "array": [
+              proof[0],
+              proof[1]
+            ]
+          }
+        }
+      
+      })
+      .accounts(accounts)
+      .preInstructions(preInstruction)
+      .rpc();
 
-    //   //tx.add(tx1).add(tx2);
+      //tx.add(tx1).add(tx2);
     // await provider.sendAndConfirm(tx);
     
 
