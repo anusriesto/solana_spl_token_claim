@@ -96,11 +96,14 @@ function App() {
       const amnt_unlocked=await get_proof_data.amount_unlocked;
       
       const amnt_locked=await get_proof_data.amount_locked;
-      const value = new anchor.BN(20000000);
+      const value_lock = new anchor.BN(amnt_locked);
+      const value_unlock = new anchor.BN(amnt_unlocked);
       const proof=await get_proof_data.proof;
-      console.log(amnt_unlocked)
-      console.log(amnt_locked)
-      console.log()
+      console.log(value_lock)
+      console.log(value_unlock)
+      console.log(proof)
+      console.log(proof[0])
+      console.log(proof[1])
 
 
 
