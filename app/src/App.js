@@ -87,10 +87,12 @@ function App() {
 
   async function handleClaim() {
     try {
+      const distributor = await fetch('http://localhost:7001/distributor');
+      const distributor_data=await distributor.json();
       const provider = await getProvider()
       const program = new Program(idl, programID, provider);
       const wal= provider.wallet.publicKey;
-      const user=wallet.publicKey.toBase58().toString();
+      const user=wallet.publicKey.toBuffer();
       const get_proof=await fetch ('http://localhost:7001/proof/'+user);
       const get_proof_data=await get_proof.json();
       const amnt_unlocked=await get_proof_data.amount_unlocked;
@@ -99,21 +101,42 @@ function App() {
       const value_lock = new anchor.BN(amnt_locked);
       const value_unlock = new anchor.BN(amnt_unlocked);
       const proof=await get_proof_data.proof;
-      console.log(value_lock)
-      console.log(value_unlock)
+      const init_wallet= await distributor_data.mint;
+      console.log(distributor_data)
+      console.log(init_wallet)
       console.log(proof)
       console.log(proof[0])
-      console.log(proof[1])
+      console.log(token)
+
+      const uint8Array = new Uint8Array(init_wallet);
+
+// Create a PublicKey object from the Uint8Array
+      const publicKey_1 = new PublicKey(uint8Array);
+
+      // Output the Solana public key (address)
+      console.log(publicKey_1.toBase58());
 
 
 
       // claim logic token here
       //distributorpda
-      const claim_statusPda = await PublicKey.findProgramAddressSync(
+      const [distributorPda,_disbump] = await PublicKey.findProgramAddressSync(
         [
-          Buffer.from('ClainStatus'),
-          dist.toBuffer(),
-          wal.toBuffer() // Replace version with your distributor version
+          anchor.utils.bytes.utf8.encode("MerkleDistributor"),
+          token.toBuffer(),
+          new anchor.BN(4),
+          
+          // Replace version with your distributor version
+        ],
+        program.programId
+      );
+      console.log(distributorPda);
+      const [claim_statusPda,_claim_bump] = await PublicKey.findProgramAddressSync(
+        [
+          anchor.utils.bytes.utf8.encode("ClaimStatus"),
+          user,
+          distributorPda.toBuffer(),
+          
         ],
         program.programId
       );
@@ -121,42 +144,36 @@ function App() {
         token,
         wal
       );
-      const tx = new Transaction();
-      const preInstruction=await createSendSolanaSPLTokensInstruction(
-        connection,
-        provider.wallet.publicKey,
-        provider.wallet.publicKey
+      console.log(distributorPda.toBase58(),_disbump);
+      console.log(claim_statusPda.toBase58(),_claim_bump);
+      console.log(user)
+      console.log(dist.toBuffer())
 
-      )
+      //const tx = new Transaction();
+      // const preInstruction=await createSendSolanaSPLTokensInstruction(
+      //   connection,
+      //   provider.wallet.publicKey,
+      //   provider.wallet.publicKey
+
+      // )
         
 
-    const accounts = {
-      distributor: dist,
-      claimStatus:claim_statusPda,
-      from: from_ata,
-      to: associatedTokenTo,
-      claimant:provider.wallet.publicKey,
-      systemProgram: SystemProgram.programId,
-      tokenProgram: TOKEN_PROGRAM_ID,
-    };
-    await program.methods.newClaim(value_lock,value_unlock,{
-        "name": "proof",
-        "type": {
-          "vec": {
-            "array": [
-              proof[0],
-              proof[1]
-            ]
-          }
-        }
-      
-      })
-      .accounts(accounts)
-      .preInstructions(preInstruction)
-      .rpc();
+    // const accounts = {
+    //   distributor: distributorPda,
+    //   claimStatus:claim_statusPda,
+    //   from: from_ata,
+    //   to: associatedTokenTo,
+    //   claimant:provider.wallet.publicKey,
+    //   systemProgram: SystemProgram.programId,
+    //   tokenProgram: TOKEN_PROGRAM_ID,
+    // };
+    // await program.methods
+    //   .newClaim(value_lock,value_unlock,[proof[0],proof[1]])
+    //   .accounts(accounts)
+    //   //.preInstructions(preInstruction)
+    //   .rpc();
 
       //tx.add(tx1).add(tx2);
-    // await provider.sendAndConfirm(tx);
     
 
       

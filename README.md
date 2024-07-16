@@ -16,7 +16,7 @@ kle_tree.json
 - convert the time to unix time stamp using this link "https://www.unixtimestamp.com/"
 - here in clawback account, provide token holder address not wallet address
 ```bash
-./target/release/cli --mint ZdZED9GYzW41wSrydaqZJbsYFhprasmGHVTQF2725Db --rpc-url https://api.devnet.solana.com --keypair-path /home/anusriesto/.config/solana/id.json --program-id G15pAFExGrHqAeSLRPPrXzCXFqJpajhSaTic7pWzJEU7 --airdrop-version 3 new-distributor --clawback-receiver-token-account CoiC3ov6CN4rXvmhQ2ZEvBFaEWyFdtMcnufaCwFm1Gof --start-vesting-ts 	1720963829 --end-vesting-ts 	1720964129 --merkle-tree-path merkle_tree.json --clawback-start-ts 1721136929
+./target/release/cli --mint ZdZED9GYzW41wSrydaqZJbsYFhprasmGHVTQF2725Db --rpc-url https://api.devnet.solana.com --keypair-path /home/anusriesto/.config/solana/id.json --program-id G15pAFExGrHqAeSLRPPrXzCXFqJpajhSaTic7pWzJEU7 --airdrop-version 4 new-distributor --clawback-receiver-token-account CoiC3ov6CN4rXvmhQ2ZEvBFaEWyFdtMcnufaCwFm1Gof --start-vesting-ts 1721135781 --end-vesting-ts 1721136021 --merkle-tree-path merkle_tree.json --clawback-start-ts 1721395221
 ```
 
 
