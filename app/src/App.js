@@ -40,12 +40,13 @@ function App() {
   const [userAddress, setUserAddress] = useState(null);
   const [claimAmount, setClaimAmount] = useState(null);
   const [proof, setProof] = useState(null); // Declare proof state here
-  const dist = new PublicKey('CtFnTySC3JaWTiM8EYz8uQAtqbgYWUxy9z96r93Grf3T');
+  const dist = new PublicKey('2XvQtxhz2RadzfAi9kb4cZNYL2xqCaHCJYknU34ZZTWK');
+  const dist_2=new PublicKey('CtFnTySC3JaWTiM8EYz8uQAtqbgYWUxy9z96r93Grf3T')
   const { connection } = useConnection();
   const token = new PublicKey('ZdZED9GYzW41wSrydaqZJbsYFhprasmGHVTQF2725Db');
   const wallet = useWallet();
   const { publicKey, signTransaction, sendTransaction } = useWallet();
-  const from_ata=new PublicKey('CoiC3ov6CN4rXvmhQ2ZEvBFaEWyFdtMcnufaCwFm1Gof')
+  const from_ata=new PublicKey('unHsgxyqCC4nYaiH8FbyLAei4XmY1Gf3mCNnJY73cr2')
   
   
   
@@ -92,7 +93,7 @@ function App() {
       const provider = await getProvider()
       const program = new Program(idl, programID, provider);
       const wal= provider.wallet.publicKey;
-      const user=wallet.publicKey.toBuffer();
+      const user=wallet.publicKey.toBase58().toString();
       const get_proof=await fetch ('http://localhost:7001/proof/'+user);
       const get_proof_data=await get_proof.json();
       const amnt_unlocked=await get_proof_data.amount_unlocked;
@@ -106,7 +107,7 @@ function App() {
       console.log(init_wallet)
       console.log(proof)
       console.log(proof[0])
-      console.log(token)
+      console.log(user)
 
       const uint8Array = new Uint8Array(init_wallet);
 
@@ -120,25 +121,22 @@ function App() {
 
       // claim logic token here
       //distributorpda
-      const [distributorPda,_disbump] = await PublicKey.findProgramAddressSync(
+      const [distributorPda,_disbump] = PublicKey.findProgramAddressSync(
         [
           anchor.utils.bytes.utf8.encode("MerkleDistributor"),
           token.toBuffer(),
-          new anchor.BN(4),
-          
-          // Replace version with your distributor version
+          new anchor.BN(4)
         ],
-        program.programId
+        programID
       );
       console.log(distributorPda);
-      const [claim_statusPda,_claim_bump] = await PublicKey.findProgramAddressSync(
+      const [claim_statusPda,_claim_bump] = PublicKey.findProgramAddressSync(
         [
           anchor.utils.bytes.utf8.encode("ClaimStatus"),
-          user,
-          distributorPda.toBuffer(),
-          
+          wal.toBytes(),
+          dist.toBytes()
         ],
-        program.programId
+        programID
       );
       const associatedTokenTo = await getAssociatedTokenAddress(
         token,
@@ -147,31 +145,31 @@ function App() {
       console.log(distributorPda.toBase58(),_disbump);
       console.log(claim_statusPda.toBase58(),_claim_bump);
       console.log(user)
-      console.log(dist.toBuffer())
+      console.log(proof)
 
       //const tx = new Transaction();
-      // const preInstruction=await createSendSolanaSPLTokensInstruction(
-      //   connection,
-      //   provider.wallet.publicKey,
-      //   provider.wallet.publicKey
+      const preInstruction=await createSendSolanaSPLTokensInstruction(
+        connection,
+        provider.wallet.publicKey,
+        provider.wallet.publicKey
 
-      // )
+       )
         
 
-    // const accounts = {
-    //   distributor: distributorPda,
-    //   claimStatus:claim_statusPda,
-    //   from: from_ata,
-    //   to: associatedTokenTo,
-    //   claimant:provider.wallet.publicKey,
-    //   systemProgram: SystemProgram.programId,
-    //   tokenProgram: TOKEN_PROGRAM_ID,
-    // };
-    // await program.methods
-    //   .newClaim(value_lock,value_unlock,[proof[0],proof[1]])
-    //   .accounts(accounts)
-    //   //.preInstructions(preInstruction)
-    //   .rpc();
+    const accounts = {
+      distributor: dist,
+      claimStatus:claim_statusPda,
+      from: from_ata,
+      to: associatedTokenTo,
+      claimant:provider.wallet.publicKey,
+      systemProgram: SystemProgram.programId,
+      tokenProgram: TOKEN_PROGRAM_ID,
+    };
+    await program.methods
+      .newClaim(value_unlock,value_lock,[proof[0],proof[1]])
+      .accounts(accounts)
+      .preInstructions(preInstruction)
+      .rpc();
 
       //tx.add(tx1).add(tx2);
     
