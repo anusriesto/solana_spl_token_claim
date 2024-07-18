@@ -43,13 +43,13 @@ function App() {
   const [claimunLockAmount, setClaimunLockAmount] = useState(null);
   const [claim_status,setclaim_status]=useState(null);
   const [proof, setProof] = useState(null); // Declare proof state here
-  const dist = new PublicKey('2XvQtxhz2RadzfAi9kb4cZNYL2xqCaHCJYknU34ZZTWK');
+  //const dist = new PublicKey('2XvQtxhz2RadzfAi9kb4cZNYL2xqCaHCJYknU34ZZTWK');
   const dist_2=new PublicKey('CtFnTySC3JaWTiM8EYz8uQAtqbgYWUxy9z96r93Grf3T')
   const { connection } = useConnection();
   const token = new PublicKey('ZdZED9GYzW41wSrydaqZJbsYFhprasmGHVTQF2725Db');
   const wallet = useWallet();
   const { publicKey, signTransaction, sendTransaction } = useWallet();
-  const from_ata=new PublicKey('unHsgxyqCC4nYaiH8FbyLAei4XmY1Gf3mCNnJY73cr2')
+  
   
   
   useEffect(() =>
@@ -127,8 +127,8 @@ function App() {
       const [distributorPda,_disbump] = PublicKey.findProgramAddressSync(
         [
           anchor.utils.bytes.utf8.encode("MerkleDistributor"),
-          token.toBuffer(),
-          new anchor.BN(4)
+          token.toBytes(),
+          new anchor.BN(4).toArrayLike(Buffer, "le", 8)
         ],
         programID
       );
@@ -137,10 +137,15 @@ function App() {
         [
           anchor.utils.bytes.utf8.encode("ClaimStatus"),
           wal.toBytes(),
-          dist.toBytes()
+          distributorPda.toBytes()
         ],
         programID
       );
+      const from_ata=await getAssociatedTokenAddress(
+        token,
+        distributorPda,
+        true
+      )
       const associatedTokenTo = await getAssociatedTokenAddress(
         token,
         wal
@@ -148,7 +153,7 @@ function App() {
       console.log(distributorPda.toBase58(),_disbump);
       console.log(claim_statusPda.toBase58(),_claim_bump);
       console.log(user)
-      console.log(proof)
+      console.log(from_ata.toBase58())
 
     
       const preInstruction=await createSendSolanaSPLTokensInstruction(
@@ -160,7 +165,7 @@ function App() {
         
 
     const accounts = {
-      distributor: dist,
+      distributor: distributorPda,
       claimStatus:claim_statusPda,
       from: from_ata,
       to: associatedTokenTo,
